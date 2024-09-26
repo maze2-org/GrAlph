@@ -4,7 +4,7 @@ const Block = require('../models/Block');
 const { Command } = require('commander');
 const program = new Command();
 
-async function fetchBlocks(fromTs) {
+async function commands(fromTs) {
   if (!fromTs) {
     console.error('❌Please provide fromTs as a parameter.');
     return;
@@ -51,7 +51,7 @@ program
   .option('--fromTs <fromTs>', 'Start timestamp for blocks in milliseconds', parseInt)
   .action(async (cmdObj) => {
     const { fromTs } = cmdObj;
-    await fetchBlocks(fromTs);
+    await commands(fromTs);
   });
 
 program.parse(process.argv);
