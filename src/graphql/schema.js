@@ -78,6 +78,7 @@ const schema = buildSchema(`
   type Query {
     getBlocks(fromTs: Float!, toTs: Float!): [Block]
     getBlockByHash(hash: String!): Block
+    getTransactionsByAddress(address: String!): [Transaction]
   }
 `);
 
