@@ -1,16 +1,9 @@
 # Node.js
 node_modules/
 npm-debug.log
-package-lock.json
-yarn-error.log
-yarn.lock
 
 # IDE
 .idea/
-
-# Logs
-logs/
-*.log
 
 # OS
 .DS_Store
@@ -18,13 +11,4 @@ Thumbs.db
 
 # Environment variables
 .env
-.env.local
-.env.*.local
 
-# Build output
-dist/
-build/
-
-# Temporary files
-tmp/
-temp/

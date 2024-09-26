@@ -10,6 +10,8 @@ async function commands(fromTs) {
     return;
   }
   try {
+    await mongoose.connect('mongodb://localhost:27017/alephium');
+
     while (true) {
 
       const toTs = fromTs + 1800000;
@@ -25,9 +27,18 @@ async function commands(fromTs) {
         continue;
       }
 
-      await mongoose.connect('mongodb://localhost:27017/alephium');
+      const uniqueBlocks = await Promise.all(blocks.map(async (block,index) => {
+        const exists = await Block.exists({ hash: block.hash });
+        return exists ? null : block;
+      }));
+      const newBlocks = uniqueBlocks.filter(block => block !== null);
 
-      await Block.insertMany(blocks);
+      if (newBlocks.length > 0) {
+        await Block.insertMany(newBlocks);
+        console.log(`✅ Inserted ${newBlocks.length} new blocks.`);
+      } else {
+        console.log('⚠️No new blocks to insert.');
+      }
 
       fromTs = toTs;
 

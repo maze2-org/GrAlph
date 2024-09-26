@@ -29,7 +29,7 @@ const transactionSchema = new Schema({
 });
 
 const blockSchema = new Schema({
-  hash: { type: String, required: true },
+  hash: { type: String, required: true, unique:true },
   timestamp: { type: Number, required: true },
   chainFrom: { type: Number },
   chainTo: { type: Number },
@@ -48,5 +48,7 @@ const blockSchema = new Schema({
     }
   ]
 });
+
+blockSchema.index({ hash: 1 }, { unique: true });
 
 module.exports = mongoose.model('Block', blockSchema);
