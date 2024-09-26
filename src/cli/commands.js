@@ -6,7 +6,7 @@ const program = new Command();
 
 async function commands(fromTs) {
   if (!fromTs) {
-    console.error('❌Please provide fromTs as a parameter.');
+    console.error('❌ Please provide fromTs as a parameter.');
     return;
   }
   try {
@@ -23,11 +23,11 @@ async function commands(fromTs) {
       const blocks = data?.blocksAndEvents?.flatMap(blockArray => blockArray.map(blockItem => blockItem.block)) || [];
 
       if (blocks.length === 0) {
-        console.log('⚠️No blocks found for the specified time range.');
+        console.log('⚠️ No blocks found for the specified time range.');
         continue;
       }
 
-      const uniqueBlocks = await Promise.all(blocks.map(async (block,index) => {
+      const uniqueBlocks = await Promise.all(blocks.map(async (block) => {
         const exists = await Block.exists({ hash: block.hash });
         return exists ? null : block;
       }));
@@ -43,7 +43,7 @@ async function commands(fromTs) {
       fromTs = toTs;
 
       if (fromTs >= Date.now()) {
-        console.log('✅Reached the current time, stopping fetch.');
+        console.log('✅ Reached the current time, stopping fetch.');
         break;
       }
 

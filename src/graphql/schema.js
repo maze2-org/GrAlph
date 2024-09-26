@@ -1,9 +1,61 @@
 const { buildSchema } = require('graphql');
 
 const schema = buildSchema(`
-   type GhostUncle { 
+  type GhostUncle { 
     blockHash: String
     miner: String
+  }
+
+  type Token {
+    id: String
+    amount: String
+  }
+
+  type Output {
+    type: String
+    hint: Int
+    key: String
+    attoAlphAmount: String
+    address: String
+    tokens: [Token]
+    lockTime: Float
+    message: String
+  }
+
+  type InputRef {
+    hint: Int
+    key: String
+  }
+
+  type UnsignedTransaction {
+    txId: String
+    version: Int
+    networkId: Int
+    gasAmount: Int
+    gasPrice: String
+    inputs: [InputRef]
+    fixedOutputs: [Output]
+  }
+
+  type Transaction {
+    unsigned: UnsignedTransaction
+    scriptExecutionOk: Boolean
+    contractInputs: [InputRef]
+    generatedOutputs: [Output]
+    inputSignatures: [String]
+    scriptSignatures: [String]
+  }
+
+  type EventField {
+    type: String
+    value: String
+  }
+
+  type Event {
+    txId: String
+    contractAddress: String
+    eventIndex: Int
+    fields: [EventField]
   }
   
   type Block {
@@ -20,27 +72,9 @@ const schema = buildSchema(`
     txsHash: String
     target: String
     ghostUncles: [GhostUncle]
+    events: [Event]
   }
 
-  type Transaction {
-    txId: String
-    version: Int
-    gasAmount: Int
-    gasPrice: String
-    inputs: [String]
-    fixedOutputs: [Output]
-  }
-
-  type Output {
-    hint: Int
-    key: String
-    attoAlphAmount: String
-    address: String
-    tokens: [String]
-    lockTime: Float
-    message: String
-  }
- 
   type Query {
     getBlocks(fromTs: Float!, toTs: Float!): [Block]
     getBlockByHash(hash: String!): Block

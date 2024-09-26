@@ -1,6 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const eventSchema = new Schema({
+  txId: { type: String },
+  contractAddress: { type: String },
+  eventIndex: { type: Number },
+  fields: [
+    {
+      type: {
+        type: String, // 'Address' or 'U256'
+      },
+      value: { type: String }
+    }
+  ]
+});
+
 const transactionSchema = new Schema({
   unsigned: {
     txId: { type: String },
@@ -8,28 +22,62 @@ const transactionSchema = new Schema({
     networkId: { type: Number },
     gasAmount: { type: Number },
     gasPrice: { type: String },
-    inputs: { type: Array },
+    inputs: [
+      {
+        outputRef: {
+          hint: { type: Number },
+          key: { type: String }
+        },
+        unlockScript: { type: String }
+      }
+    ],
     fixedOutputs: [
       {
         hint: { type: Number },
         key: { type: String },
         attoAlphAmount: { type: String },
         address: { type: String },
-        tokens: { type: Array },
+        tokens: [
+          {
+            id: { type: String },
+            amount: { type: String }
+          }
+        ],
         lockTime: { type: Number },
         message: { type: String }
       }
     ]
   },
   scriptExecutionOk: { type: Boolean },
-  contractInputs: { type: Array },
-  generatedOutputs: { type: Array },
-  inputSignatures: { type: Array },
-  scriptSignatures: { type: Array }
+  contractInputs: [
+    {
+      hint: { type: Number },
+      key: { type: String }
+    }
+  ],
+  generatedOutputs: [
+    {
+      type: { type: String }, // 'AssetOutput' or 'ContractOutput'
+      hint: { type: Number },
+      key: { type: String },
+      attoAlphAmount: { type: String },
+      address: { type: String },
+      tokens: [
+        {
+          id: { type: String },
+          amount: { type: String }
+        }
+      ],
+      lockTime: { type: Number },
+      message: { type: String }
+    }
+  ],
+  inputSignatures: { type: [String] },
+  scriptSignatures: { type: [String] }
 });
 
 const blockSchema = new Schema({
-  hash: { type: String, required: true, unique:true },
+  hash: { type: String, required: true, unique: true },
   timestamp: { type: Number, required: true },
   chainFrom: { type: Number },
   chainTo: { type: Number },
@@ -43,10 +91,11 @@ const blockSchema = new Schema({
   target: { type: String },
   ghostUncles: [
     {
-      blockHash: String,
-      miner: String
+      blockHash: { type: String },
+      miner: { type: String }
     }
-  ]
+  ],
+  events: [eventSchema]
 });
 
 blockSchema.index({ hash: 1 }, { unique: true });
