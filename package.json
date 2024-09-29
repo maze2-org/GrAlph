@@ -1,20 +1,31 @@
 {
   "name": "alephium-blocks-fetcher",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:server": "node dist/server.js",
+    "dev:server": "ts-node src/server.ts",
+    "start:fetch": "node dist/cli/fetchBlocks.js fetchBlocks",
+    "dev:fetch": "ts-node src/cli/fetchBlocks.ts fetchBlocks",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@alephium/web3": "^1.7.3",
     "axios": "^1.7.7",
     "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-graphql": "^0.12.0",
     "graphql": "^15.3.0",
     "mongoose": "^8.6.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.4",
+    "ts-node": "^10.9.2"
   }
 }

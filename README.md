@@ -3,8 +3,8 @@
 ## Features
 
 - Fetch blocks from the Alephium blockchain.
-- Store block data in MongoDB.
-- Query block data using GraphQL.
+- Resolve addresses to names using reverse name resolvers.
+- Store resolved address data in MongoDB.
 
 ## Installation
 
@@ -16,57 +16,60 @@ npm install
 
 ## Running the Project
 
+### Build the Project
+
+To build the TypeScript project, use the following command:
+
+```bash
+npm run build
+```
+
+### Start the Server
+
 To start the server, use the following command:
 
 ```bash
-node src/server.js 
+npm run start:server
 ```
 
-## Import Process
+### Development Mode
 
-To fetch blocks from the Alephium blockchain, run the following command:
+To run the server in development mode with live TypeScript compilation, use:
 
 ```bash
-node src/cli/commands.js fetch-blocks --fromTs 1727195258000
+npm run dev:server
 ```
 
-> **fromTs** is the block timestamp (in milliseconds) from which you want to start fetching blocks.
+## Fetching Data from Alephium Blockchain
 
+To fetch blocks and resolve addresses from the Alephium blockchain, run the following command:
 
-## Using GraphQL to Get Blocks
+```bash
+npm run start:fetch
+```
 
-You can use the following GraphQL endpoint to fetch block data:
+Or for development:
+
+```bash
+npm run dev:fetch
+```
+
+## Using GraphQL to Query Data
 
 ### Endpoint:
-```bash
-http://localhost:4000/graphql
-```
+
+> http://localhost:4000/graphql
 
 ### Sample Query
 
-Here’s a sample query you can use to get blocks:
+Here’s a sample query you can use to get names:
 
-```bash
-query getBlocks($fromTs: Float!, $toTs: Float!) {
-  getBlocks(fromTs: $fromTs, toTs: $toTs) {
-    chainFrom
-    chainTo
-    nonce
-    version
-    depStateHash
-    txsHash
-    target
-  }
+```graphql
+query getNames {
+    getNames {
+        name
+        address
+        addressGroup
+    }
 }
 ```
-
-Query variables:
-
-```bash
-{
-  "fromTs": 1727302100464,
-  "toTs": 1727302446094
-}
-```
-
-
